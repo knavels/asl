@@ -274,8 +274,6 @@ inline bool myisalnum(char c)
 }
 
 
-// Fatal errors (will become exceptions some day)
-
 void asl_die(const char* msg, int line = 0);
 
 void asl_error(const char* msg);
@@ -322,7 +320,7 @@ inline void swap(T& a, T& b)
 
 }
 
-inline void* operator new (size_t, int* p) /*throw()*/ {return p;}
+inline void* operator new (size_t, int* p) { return p; }
 inline void operator delete(void* p, int* r) {}
 
 namespace asl {
@@ -393,6 +391,30 @@ struct IsMore {
 	F f;
 };
 
+inline unsigned hash(const byte* p, int n)
+{
+	unsigned h = 0;
+	for (int i = 0; i < n; i++)
+		h = 33 * h + p[i];
+	return h;
+}
+
+template<class T>
+inline unsigned hash(const T& x) { return hash((const byte*)&x, sizeof(x)); }
+
+inline unsigned hash(int x) { return x; }
+
+template<class T>
+inline unsigned hash(T* p) { return ((unsigned int)p) >> 2; }
+
+template<class T>
+inline unsigned hashadd(unsigned h1, unsigned h2) { return 33 * h1 + h2; }
+
+template<class T1, class T2>
+inline unsigned hashof(const T1& x1, const T2& x2) { return hashadd(hash(x1), hash(x2)); }
+
+template<class T1, class T2, class T3>
+inline unsigned hashof(const T1& x1, const T2& x2, const T3& x3) { return hashadd(hashadd(hash(x1), hash(x2)), hash(x3)); }
 }
 
 #include "time.h"

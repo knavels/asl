@@ -717,6 +717,11 @@ void Array<T>::free()
 	_a=0;
 }
 
+inline unsigned hash(const Array<byte>& s)
+{
+	return hash(s.ptr(), s.length());
+}
+
 #ifdef ASL_HAVE_RANGEFOR
 
 template<class T>

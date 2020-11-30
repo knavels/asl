@@ -9,45 +9,6 @@
 
 namespace asl {
 
-inline int hash(int x)
-{
-	return x;
-}
-
-inline int hash(const String& s)
-{
-	int h = 0, n = s.length();
-	const char* p = s;
-	for(int i=0; i<n; i++)
-		h = 33*h + p[i];
-	return h;
-}
-
-inline int hash(const Array<byte>& s)
-{
-	int h = 0, n = s.length();
-	const byte* p = s;
-	for (int i = 0; i<n; i++)
-		h = 33 * h + p[i];
-	return h;
-}
-
-template<typename T>
-inline int hash(T* p)
-{
-	return ((int)p) >> 2;
-}
-
-template<typename T>
-inline int hash(const T& x)
-{
-	int h = 0;
-	const byte* p = (const byte*)&x;
-	for(int i=0; i<sizeof(x); i++)
-		h = 33*h + p[i];
-	return h;
-}
-
 #define ASL_HMAP_SKIP (2 + (sizeof(AtomicCount)-1)/sizeof(void*))
 
 inline int nextPoT(int n)
